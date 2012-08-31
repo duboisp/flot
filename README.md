@@ -1,4 +1,15 @@
-## About ##
+
+## About this Fork ##
+
+My goal is to build a flot plugin able to handle complex html table as a data source. The [table parser developped in the Web Experience Toolkit (WET)]<https://github.com/wet-boew/wet-boew/blob/master/src/js/workers/parser.table.js> project would be used. The resulting project from this fork would be used as the remplacement of the existing charts and graph project in the [Web Experience Toolkit (WET)]<https://github.com/wet-boew/wet-boew>. 
+
+As per the hight quality requirement of the WET toolbox, the Flot javascript files would be optimized and modified in the context of passing the [JavaScript Code Quality Tool, jsLint]<http://www.jslint.com/>.
+
+Please do not hesitate to submit any of your issue related to my goal in this fork.
+
+Pierre Dubois ([Twitter: @duboi5p]<http://twitter.com/#!/duboi5p>)
+
+## About Flot ##
 
 Flot is a Javascript plotting library for jQuery.  
 Read more at the website: <http://code.google.com/p/flot/>

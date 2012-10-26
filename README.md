@@ -12,9 +12,9 @@ Pierre Dubois ([Twitter: @duboi5p](http://twitter.com/#!/duboi5p))
 ## About Flot ##
 
 Flot is a Javascript plotting library for jQuery.  
-Read more at the website: <http://code.google.com/p/flot/>
+Read more at the website: <http://www.flotcharts.org/>
 
-Take a look at the examples linked from above, they should give a good
+Take a look at the [examples](http://people.iola.dk/olau/flot/examples/), they should give a good
 impression of what Flot can do and the source code of the examples is
 probably the fastest way to learn how to use Flot.
 

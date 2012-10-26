@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Flot Examples</title>
+    <link href="layout.css" rel="stylesheet" type="text/css">
+    <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../excanvas.min.js"></script><![endif]-->
+    <script language="javascript" type="text/javascript" src="../jquery.js"></script>
+    <script language="javascript" type="text/javascript" src="../jquery.flot.js"></script>
+    <script language="javascript" type="text/javascript" src="../jquery.flot.categories.js"></script>
+	<!-- <script src="../jquery.flot.orderBars.js"></script> 
+	
+	see http://code.google.com/p/flot/issues/detail?id=159 
+	
+	-->
+	<script language="javascript" type="text/javascript" src="../jquery.flot.stack.js"></script>
+	<script src="https://raw.github.com/wet-boew/wet-boew/master/src/js/dependencies/parserTable.js"></script>
+	
+ </head>
+    <body>
+    <h1>Create Flot based on data HTML Table</h1>
+
+	
+<table class="wet-boew-charts wb-charts-line">
+		<caption>2009 Individual Sales by Category</caption>
+		<thead>
+			<tr>
+				<td></td>
+				<th>food</th>
+				<th>auto</th>
+				<th>household</th>
+				<th>furniture</th>
+				<th>kitchen</th>
+				<th>bath</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>Mary</th>
+				<td>300</td>
+				<td>160</td>
+				<td>40</td>
+				<td>120</td>
+				<td>100</td>
+				<td>70</td>
+			</tr>
+			<tr>
+				<th>Tom</th>
+				<td>3</td>
+				<td>40</td>
+				<td>30</td>
+				<td>45</td>
+				<td>35</td>
+				<td>49</td>
+			</tr>
+			<tr>
+				<th>Brad</th>
+				<td>10</td>
+				<td>180</td>
+				<td>10</td>
+				<td>85</td>
+				<td>70</td>
+				<td>79</td>
+			</tr>
+			<tr>
+				<th>Kate</th>
+				<td>40</td>
+				<td>80</td>
+				<td>90</td>
+				<td>25</td>
+				<td>15</td>
+				<td>119</td>
+			</tr>		
+		</tbody>
+	</table>
+	
+    <div id="placeholder" style="width:600px;height:300px;"></div>
+
+    <p>With the categories plugin you can plot categories/textual data
+    easily.</p>
+
+<script type="text/javascript">
+$(function () {
+	$(document).ready(function() {
+		var _pe = window.pe || {
+			fn : {}
+		};
+		
+		function getCellValue(cellRawValue) {
+			//trim spaces in the string; 
+			cellRawValue = cellRawValue.replace(/\s\s+/g, " ");
+			cellRawValue = cellRawValue.replace(/^\s+|\s+$/g, "");
+			// Return the result
+			var result = {
+				cellUnit:  cellRawValue.match(/[^\+\-\.\, 0-9]+[^\-\+0-9]*/), // Type: Float - Hint: You can use the JS function "parseFloat(string)"
+				cellValue: parseFloat(cellRawValue.match(/[\+\-0-9]+[0-9,\. ]*/)) // Type: String
+			};
+			return result;
+		}
+		
+		_pe.fn.parsertable.parse($('table:eq(0)'));
+		
+		var tblparser = $('table:eq(0)').data().tblparser;
+		
+		var lstSeries = [];
+		var columnLabels = [];
+		var dataColumnID = 0;
+		
+		for (var i = 0; i < tblparser.row.length; i += 1){
+			var series = {};
+			
+			series.label = $(tblparser.row[i].header[0].elem).text();
+			
+			series.data = [];
+			
+			for (var j = 0; j < tblparser.row[i].cell.length; j += 1) {
+				if (tblparser.row[i].cell[j].type === 2) {
+					var cellValueObj = getCellValue($(tblparser.row[i].cell[j].elem).text());
+					
+					// series.data.push([$(tblparser.row[i].cell[j].col.header[0].elem).text(), cellValueObj.cellValue]);
+					series.data.push([dataColumnID, cellValueObj.cellValue]);
+					
+					
+					
+					if (i === 0) {
+						// Get the columns
+						columnLabels[$(tblparser.row[i].cell[j].col.header[0].elem).text()] = dataColumnID;
+						// columnLabels.push($(tblparser.row[i].cell[j].col.header[0].elem).text());
+					}
+					
+					dataColumnID += 1;
+					
+				}
+			}
+			dataColumnID = 0;
+			series.bars = {
+					show: true,
+					barWidth: 0.2,
+					order: i,
+					lineWidth : 2,
+					align: "center" };
+			lstSeries.push(series);
+			console.log(series);
+			
+		}
+		
+		
+		
+		
+		
+		// var data = [ ["January", 10], ["February", 8], ["March", 4], ["April", 13], ["May", 17], ["June", 9] ];
+		console.log(lstSeries);
+		console.log(columnLabels);
+		// $.plot($("#placeholder"), [ data ], {
+		$.plot($("#placeholder"), lstSeries, {
+			/*series: {
+			
+			//	stack: true,
+			//	bars: {
+			//		show: true,
+			//		barWidth: 0.6,
+			//		align: "center" }
+			
+			},*/
+			xaxis: {
+				mode: "categories",
+				categories: columnLabels,
+				// tickLength: 0
+			}
+		});
+	});
+});
+</script>
+
+ </body>
+</html>
